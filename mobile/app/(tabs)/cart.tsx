@@ -4,6 +4,7 @@ import useCart from "@/hooks/useCart";
 import { useApi } from "@/lib/api";
 import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Address } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
@@ -171,75 +172,76 @@ const CartScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 240 }}
       >
-        <View className="px-6 gap-2">
+        <View className="px-6 gap-6">
           {cartItems.map((item, index) => (
-            <View key={item._id} className="bg-surface rounded-3xl overflow-hidden ">
-              <View className="p-4 flex-row">
+            <View key={item._id} className="bg-white border border-gray-50 rounded-[2.5rem] shadow-sm overflow-hidden">
+              <View className="p-5 flex-row">
                 {/* product image */}
                 <View className="relative">
                   <Image
                     source={{ uri: item.product.images[0] }}
-                    className="bg-background-lighter"
+                    className="bg-gray-50 rounded-[2rem]"
                     contentFit="cover"
-                    style={{ width: 112, height: 112, borderRadius: 16 }}
+                    style={{ width: 120, height: 120 }}
                   />
-                  <View className="absolute top-2 right-2 bg-primary rounded-full px-2 py-0.5">
-                    <Text className="text-background text-xs font-bold">×{item.quantity}</Text>
+                  <View className="absolute -top-1 -right-1 bg-primary rounded-full px-2 py-1 shadow-md border-2 border-white">
+                    <Text className="text-white text-[10px] font-black tracking-tighter">×{item.quantity}</Text>
                   </View>
                 </View>
 
-                <View className="flex-1 ml-4 justify-between">
+                <View className="flex-1 ml-5 justify-between">
                   <View>
                     <Text
-                      className="text-text-primary font-bold text-lg leading-tight"
+                      className="text-text-primary font-black text-base leading-tight tracking-tighter"
                       numberOfLines={2}
                     >
                       {item.product.name}
                     </Text>
-                    <View className="flex-row items-center mt-2">
-                      <Text className="text-primary font-bold text-2xl">
+                    <View className="flex-row items-center mt-3">
+                      <Text className="text-primary font-black text-2xl tracking-tighter">
                         ${(item.product.price * item.quantity).toFixed(2)}
                       </Text>
-                      <Text className="text-text-secondary text-sm ml-2">
-                        ${item.product.price.toFixed(2)} each
+                      <Text className="text-text-tertiary text-[10px] font-bold ml-2 uppercase">
+                        ${item.product.price.toFixed(2)} ea
                       </Text>
                     </View>
                   </View>
 
-                  <View className="flex-row items-center mt-3">
-                    <TouchableOpacity
-                      className="bg-white rounded-full w-9 h-9 items-center justify-center shadow-sm"
-                      activeOpacity={0.7}
-                      onPress={() => handleQuantityChange(item.product._id, item.quantity, -1)}
-                      disabled={isUpdating}
-                    >
-                      {isUpdating ? (
-                        <ActivityIndicator size="small" color="#4F46E5" />
-                      ) : (
-                        <Ionicons name="remove" size={18} color="#4F46E5" />
-                      )}
-                    </TouchableOpacity>
+                  <View className="flex-row items-center mt-4">
+                    <View className="flex-row items-center bg-gray-50 p-1 rounded-2xl border border-gray-100">
+                      <TouchableOpacity
+                        className="bg-white rounded-xl w-10 h-10 items-center justify-center shadow-sm"
+                        activeOpacity={0.7}
+                        onPress={() => handleQuantityChange(item.product._id, item.quantity, -1)}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? (
+                          <ActivityIndicator size="small" color="#4F46E5" />
+                        ) : (
+                          <Ionicons name="remove" size={18} color="#121212" />
+                        )}
+                      </TouchableOpacity>
 
-                    <View className="mx-4 min-w-[32px] items-center">
-                      <Text className="text-text-primary font-black text-lg">{item.quantity}</Text>
+                      <View className="mx-4 min-w-[24px] items-center">
+                        <Text className="text-text-primary font-black text-lg">{item.quantity}</Text>
+                      </View>
+
+                      <TouchableOpacity
+                        className="bg-primary rounded-xl w-10 h-10 items-center justify-center shadow-md shadow-primary/20"
+                        activeOpacity={0.7}
+                        onPress={() => handleQuantityChange(item.product._id, item.quantity, 1)}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? (
+                          <ActivityIndicator size="small" color="#FFFFFF" />
+                        ) : (
+                          <Ionicons name="add" size={18} color="#FFFFFF" />
+                        )}
+                      </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity
-                      className="bg-primary rounded-full w-9 h-9 items-center justify-center shadow-md shadow-primary/20"
-                      activeOpacity={0.7}
-                      onPress={() => handleQuantityChange(item.product._id, item.quantity, 1)}
-                      disabled={isUpdating}
-                    >
-                      {isUpdating ? (
-                        <ActivityIndicator size="small" color="#FFFFFF" />
-                      ) : (
-                        <Ionicons name="add" size={18} color="#FFFFFF" />
-                      )}
-                    </TouchableOpacity>
-
-
-                    <TouchableOpacity
-                      className="ml-auto bg-red-500/10 rounded-full w-9 h-9 items-center justify-center"
+                      className="ml-auto bg-red-50 rounded-2xl w-11 h-11 items-center justify-center border border-red-100"
                       activeOpacity={0.7}
                       onPress={() => handleRemoveItem(item.product._id, item.product.name)}
                       disabled={isRemoving}
@@ -252,6 +254,7 @@ const CartScreen = () => {
             </View>
           ))}
         </View>
+
 
         <OrderSummary subtotal={subtotal} shipping={shipping} tax={tax} total={total} />
       </ScrollView>
@@ -314,10 +317,12 @@ function LoadingUI() {
 
 function ErrorUI() {
   return (
-    <View className="flex-1 bg-white items-center justify-center px-6">
-      <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
-      <Text className="text-text-primary font-semibold text-xl mt-4">Failed to load bag</Text>
-      <Text className="text-text-secondary text-center mt-2 font-medium">
+    <View className="flex-1 bg-white items-center justify-center px-10">
+      <View className="bg-red-50 p-10 rounded-[3rem] items-center justify-center mb-10 shadow-sm border border-red-100/30">
+        <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
+      </View>
+      <Text className="text-text-primary font-black text-2xl text-center mb-4 tracking-tight">Failed to load bag</Text>
+      <Text className="text-text-tertiary text-center font-medium leading-5 px-4">
         Please check your connection and try again
       </Text>
     </View>
@@ -325,19 +330,33 @@ function ErrorUI() {
 }
 
 
+
 function EmptyUI() {
   return (
-    <View className="flex-1 bg-background">
-      <View className="px-6 pt-16 pb-5">
-        <Text className="text-text-primary text-3xl font-bold tracking-tight">Cart</Text>
+    <SafeScreen>
+      <View className="px-6 pt-8 pb-5 flex-row items-center border-b border-gray-50">
+        <View>
+          <Text className="text-primary text-3xl font-black tracking-tighter">LUXE.</Text>
+          <Text className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">Your Bag</Text>
+        </View>
       </View>
-      <View className="flex-1 items-center justify-center px-6">
-        <Ionicons name="cart-outline" size={80} color="#666" />
-        <Text className="text-text-primary font-semibold text-xl mt-4">Your cart is empty</Text>
-        <Text className="text-text-secondary text-center mt-2">
-          Add some products to get started
+      <View className="flex-1 items-center justify-center px-10">
+        <View className="bg-indigo-50 p-10 rounded-[3rem] mb-10 shadow-sm border border-indigo-100/30">
+          <Ionicons name="cart-outline" size={80} color="#4F46E5" />
+        </View>
+        <Text className="text-text-primary font-black text-2xl text-center mb-4 tracking-tight">Your Bag is Empty</Text>
+        <Text className="text-text-tertiary text-center font-medium leading-5 px-4 mb-10">
+          Add some products to your bag to start your premium shopping experience.
         </Text>
+        <TouchableOpacity
+          className="bg-primary px-10 py-5 rounded-[2rem] shadow-xl shadow-primary/30"
+          onPress={() => router.push("/(tabs)")}
+          activeOpacity={0.8}
+        >
+          <Text className="text-white font-black uppercase tracking-widest">Explore Shop</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeScreen>
   );
 }
+

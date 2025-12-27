@@ -1,7 +1,8 @@
 import SafeScreen from "@/components/SafeScreen";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, Alert } from "react-native";
+
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -18,8 +19,32 @@ const ProfileScreen = () => {
   const { user } = useUser();
 
   const handleMenuPress = (action: (typeof MENU_ITEMS)[number]["action"]) => {
+
     if (action === "/profile") return;
     router.push(action);
+  };
+
+  const handleSignOut = () => {
+
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Sign Out",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await signOut();
+              // The Redirect in (tabs)/_layout.tsx will handle the navigation to "/"
+            } catch (error) {
+              console.error("Error signing out:", error);
+            }
+          }
+        },
+      ]
+    );
   };
 
   return (
@@ -116,11 +141,12 @@ const ProfileScreen = () => {
         <TouchableOpacity
           className="mx-6 mb-8 bg-red-50 rounded-3xl py-5 flex-row items-center justify-center border border-red-100"
           activeOpacity={0.8}
-          onPress={() => signOut()}
+          onPress={handleSignOut}
         >
           <Ionicons name="log-out-outline" size={22} color="#EF4444" />
           <Text className="text-red-500 font-black uppercase tracking-widest text-sm ml-2">Sign Out</Text>
         </TouchableOpacity>
+
 
 
         <Text className="mx-6 mb-3 text-center text-text-secondary text-xs">Version 1.0.0</Text>

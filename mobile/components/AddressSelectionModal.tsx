@@ -22,61 +22,75 @@ const AddressSelectionModal = ({
 
   return (
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
-      <View className="flex-1 bg-black/50 justify-end">
-        <View className="bg-background rounded-t-3xl h-1/2">
+      <View className="flex-1 bg-black/40 justify-end">
+        <View className="bg-white rounded-t-[3rem] h-[65%] shadow-2xl">
           {/* Modal Header */}
-          <View className="flex-row items-center justify-between p-6 border-b border-surface">
-            <Text className="text-text-primary text-2xl font-bold">Select Address</Text>
-            <TouchableOpacity onPress={onClose} className="bg-surface rounded-full p-2">
-              <Ionicons name="close" size={24} color="#FFFFFF" />
+          <View className="flex-row items-center justify-between px-8 py-8 border-b border-gray-50">
+            <View>
+              <Text className="text-primary text-3xl font-black tracking-tighter">LUXE.</Text>
+              <Text className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">
+                Select Shipping Address
+              </Text>
+            </View>
+            <TouchableOpacity onPress={onClose} className="bg-gray-100 rounded-2xl p-2.5">
+              <Ionicons name="close" size={24} color="#121212" />
             </TouchableOpacity>
           </View>
 
           {/* ADDRESSES LIST */}
-          <ScrollView className="flex-1 p-6">
+          <ScrollView className="flex-1 px-6 pt-4">
             {addressesLoading ? (
-              <View className="py-8">
-                <ActivityIndicator size="large" color="#00D9FF" />
+              <View className="py-20 flex-1 items-center justify-center">
+                <ActivityIndicator size="large" color="#4F46E5" />
+                <Text className="text-text-secondary font-bold mt-4 uppercase text-[10px] tracking-widest">
+                  Loading addresses
+                </Text>
               </View>
             ) : (
-              <View className="gap-4">
+              <View className="gap-6 pb-20">
                 {addresses?.map((address: Address) => (
                   <TouchableOpacity
                     key={address._id}
-                    className={`bg-surface rounded-3xl p-6 border-2 ${
-                      selectedAddress?._id === address._id
-                        ? "border-primary"
-                        : "border-background-lighter"
-                    }`}
-                    activeOpacity={0.7}
+                    className={`bg-white rounded-[2rem] p-6 border-2 shadow-sm ${selectedAddress?._id === address._id ? "border-primary" : "border-gray-50"
+                      }`}
+                    activeOpacity={0.8}
                     onPress={() => setSelectedAddress(address)}
                   >
                     <View className="flex-row items-start justify-between">
                       <View className="flex-1">
-                        <View className="flex-row items-center mb-3">
-                          <Text className="text-primary font-bold text-lg mr-2">
-                            {address.label}
-                          </Text>
+                        <View className="flex-row items-center mb-4">
+                          <View className="bg-indigo-50 px-3 py-1.5 rounded-xl mr-3">
+                            <Text className="text-primary font-black text-xs uppercase tracking-tighter">
+                              {address.label}
+                            </Text>
+                          </View>
                           {address.isDefault && (
-                            <View className="bg-primary/20 rounded-full px-3 py-1">
-                              <Text className="text-primary text-sm font-semibold">Default</Text>
+                            <View className="bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100">
+                              <Text className="text-text-tertiary text-[10px] font-black uppercase">
+                                Default
+                              </Text>
                             </View>
                           )}
                         </View>
-                        <Text className="text-text-primary font-semibold text-lg mb-2">
+                        <Text className="text-text-primary font-black text-lg mb-2">
                           {address.fullName}
                         </Text>
-                        <Text className="text-text-secondary text-base leading-6 mb-1">
+                        <Text className="text-text-secondary font-medium text-sm leading-5 mb-1">
                           {address.streetAddress}
                         </Text>
-                        <Text className="text-text-secondary text-base mb-2">
+                        <Text className="text-text-secondary font-medium text-sm mb-3">
                           {address.city}, {address.state} {address.zipCode}
                         </Text>
-                        <Text className="text-text-secondary text-base">{address.phoneNumber}</Text>
+                        <View className="flex-row items-center bg-gray-50/50 self-start px-2 py-1 rounded-lg">
+                          <Ionicons name="call-outline" size={12} color="#9CA3AF" />
+                          <Text className="text-text-tertiary font-bold text-[10px] ml-1.5 uppercase tracking-tighter">
+                            {address.phoneNumber}
+                          </Text>
+                        </View>
                       </View>
                       {selectedAddress?._id === address._id && (
-                        <View className="bg-primary rounded-full p-2 ml-3">
-                          <Ionicons name="checkmark" size={24} color="#121212" />
+                        <View className="bg-primary rounded-2xl p-2.5 shadow-lg shadow-primary/30">
+                          <Ionicons name="checkmark-sharp" size={24} color="#FFFFFF" />
                         </View>
                       )}
                     </View>
@@ -86,9 +100,13 @@ const AddressSelectionModal = ({
             )}
           </ScrollView>
 
-          <View className="p-6 border-t border-surface">
+          {/* ACTION BUTTON */}
+          <View className="p-8 border-t border-gray-50 pb-12">
             <TouchableOpacity
-              className="bg-primary rounded-2xl py-5"
+              className={`rounded-[2rem] py-5 shadow-xl ${selectedAddress && !isProcessing
+                  ? "bg-primary shadow-primary/30"
+                  : "bg-gray-200 shadow-none invisible"
+                }`}
               activeOpacity={0.9}
               onPress={() => {
                 if (selectedAddress) onProceed(selectedAddress);
@@ -97,13 +115,13 @@ const AddressSelectionModal = ({
             >
               <View className="flex-row items-center justify-center">
                 {isProcessing ? (
-                  <ActivityIndicator size="small" color="#121212" />
+                  <ActivityIndicator size="small" color="#FFFFFF" />
                 ) : (
                   <>
-                    <Text className="text-background font-bold text-lg mr-2">
-                      Continue to Payment
+                    <Text className="text-white font-black uppercase tracking-[2px] text-lg mr-2">
+                      Secure Checkout
                     </Text>
-                    <Ionicons name="arrow-forward" size={20} color="#121212" />
+                    <Ionicons name="shield-checkmark" size={20} color="#FFFFFF" />
                   </>
                 )}
               </View>

@@ -130,19 +130,22 @@ function AddressesScreen() {
 
       {addresses.length === 0 ? (
         <View className="flex-1 items-center justify-center px-6">
-          <Ionicons name="location-outline" size={80} color="#666" />
-          <Text className="text-text-primary font-semibold text-xl mt-4">No addresses yet</Text>
-          <Text className="text-text-secondary text-center mt-2">
-            Add your first delivery address
+          <View className="bg-indigo-50 p-10 rounded-full mb-6">
+            <Ionicons name="location-outline" size={80} color="#4F46E5" />
+          </View>
+          <Text className="text-text-primary font-black text-2xl mt-4">No addresses</Text>
+          <Text className="text-text-secondary text-center mt-2 font-medium px-8 leading-5">
+            Add your first delivery address to start shopping!
           </Text>
           <TouchableOpacity
-            className="bg-primary rounded-2xl px-8 py-4 mt-6"
+            className="bg-primary rounded-[2rem] px-10 py-5 mt-8 shadow-xl shadow-primary/30"
             activeOpacity={0.8}
             onPress={handleAddAddress}
           >
-            <Text className="text-background font-bold text-base">Add Address</Text>
+            <Text className="text-white font-bold text-lg uppercase tracking-wider">Add Address</Text>
           </TouchableOpacity>
         </View>
+
       ) : (
         <ScrollView
           className="flex-1"
@@ -162,15 +165,16 @@ function AddressesScreen() {
             ))}
 
             <TouchableOpacity
-              className="bg-primary rounded-2xl py-4 items-center mt-2"
+              className="bg-primary rounded-2xl py-5 items-center mt-6 shadow-xl shadow-primary/30"
               activeOpacity={0.8}
               onPress={handleAddAddress}
             >
               <View className="flex-row items-center">
-                <Ionicons name="add-circle-outline" size={24} color="#121212" />
-                <Text className="text-background font-bold text-base ml-2">Add New Address</Text>
+                <Ionicons name="add-circle-outline" size={24} color="#FFFFFF" />
+                <Text className="text-white font-black uppercase tracking-wider ml-2">Add New Address</Text>
               </View>
             </TouchableOpacity>
+
           </View>
         </ScrollView>
       )}
@@ -195,12 +199,12 @@ function ErrorUI() {
     <SafeScreen>
       <AddressesHeader />
       <View className="flex-1 items-center justify-center px-6">
-        <Ionicons name="alert-circle-outline" size={64} color="#FF6B6B" />
-        <Text className="text-text-primary font-semibold text-xl mt-4">
-          Failed to load addresses
-        </Text>
-        <Text className="text-text-secondary text-center mt-2">
-          Please check your connection and try again
+        <View className="bg-red-50 p-10 rounded-full mb-6">
+          <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
+        </View>
+        <Text className="text-text-primary font-black text-2xl mt-4">Oops! Error</Text>
+        <Text className="text-text-secondary text-center mt-2 font-medium">
+          We couldn't load your addresses. Please try again.
         </Text>
       </View>
     </SafeScreen>
@@ -211,10 +215,11 @@ function LoadingUI() {
   return (
     <SafeScreen>
       <AddressesHeader />
-      <View className="flex-1 items-center justify-center px-6">
-        <ActivityIndicator size="large" color="#00D9FF" />
-        <Text className="text-text-secondary mt-4">Loading addresses...</Text>
+      <View className="flex-1 bg-white items-center justify-center px-6">
+        <ActivityIndicator size="large" color="#4F46E5" />
+        <Text className="text-text-secondary font-semibold mt-4">Fetching addresses...</Text>
       </View>
     </SafeScreen>
   );
 }
+

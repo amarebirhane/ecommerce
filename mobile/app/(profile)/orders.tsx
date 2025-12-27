@@ -64,12 +64,19 @@ function OrdersScreen() {
   return (
     <SafeScreen>
       {/* Header */}
-      <View className="px-6 pb-5 border-b border-surface flex-row items-center">
-        <TouchableOpacity onPress={() => router.back()} className="mr-4">
-          <Ionicons name="arrow-back" size={28} color="#FFFFFF" />
+      <View className="px-6 pt-8 pb-5 flex-row items-center border-b border-gray-50">
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="bg-white p-2 rounded-xl border border-gray-100 mr-4 shadow-sm"
+        >
+          <Ionicons name="arrow-back" size={24} color="#4F46E5" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">My Orders</Text>
+        <View>
+          <Text className="text-primary text-2xl font-black tracking-tighter">LUXE.</Text>
+          <Text className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">Orders</Text>
+        </View>
       </View>
+
 
       {isLoading ? (
         <LoadingUI />
@@ -89,85 +96,90 @@ function OrdersScreen() {
               const firstImage = order.orderItems[0]?.image || "";
 
               return (
-                <View key={order._id} className="bg-surface rounded-3xl p-5 mb-4">
-                  <View className="flex-row mb-4">
+                <View key={order._id} className="bg-white border border-gray-100 rounded-[2rem] p-6 mb-6 shadow-sm">
+                  <View className="flex-row mb-5">
                     <View className="relative">
                       <Image
                         source={firstImage}
-                        style={{ height: 80, width: 80, borderRadius: 8 }}
+                        style={{ height: 90, width: 90, borderRadius: 16 }}
                         contentFit="cover"
+                        transition={200}
                       />
 
                       {/* BADGE FOR MORE ITEMS */}
                       {order.orderItems.length > 1 && (
-                        <View className="absolute -bottom-1 -right-1 bg-primary rounded-full size-7 items-center justify-center">
-                          <Text className="text-background text-xs font-bold">
+                        <View className="absolute -bottom-1 -right-1 bg-primary rounded-full size-8 items-center justify-center border-4 border-white">
+                          <Text className="text-white text-[10px] font-black">
                             +{order.orderItems.length - 1}
                           </Text>
                         </View>
                       )}
                     </View>
 
-                    <View className="flex-1 ml-4">
-                      <Text className="text-text-primary font-bold text-base mb-1">
+                    <View className="flex-1 ml-5 justify-center">
+                      <Text className="text-text-primary font-black text-lg mb-1">
                         Order #{order._id.slice(-8).toUpperCase()}
                       </Text>
-                      <Text className="text-text-secondary text-sm mb-2">
+                      <Text className="text-text-secondary text-[10px] font-bold uppercase tracking-widest mb-3">
                         {formatDate(order.createdAt)}
                       </Text>
                       <View
-                        className="self-start px-3 py-1.5 rounded-full"
-                        style={{ backgroundColor: getStatusColor(order.status) + "20" }}
+                        className="self-start px-3 py-1 rounded-lg"
+                        style={{ backgroundColor: getStatusColor(order.status) + "15" }}
                       >
                         <Text
-                          className="text-xs font-bold"
+                          className="text-[10px] font-black uppercase tracking-tighter"
                           style={{ color: getStatusColor(order.status) }}
                         >
-                          {capitalizeFirstLetter(order.status)}
+                          {order.status}
                         </Text>
                       </View>
                     </View>
                   </View>
 
                   {/* ORDER ITEMS SUMMARY */}
-                  {order.orderItems.map((item, index) => (
-                    <Text
-                      key={item._id}
-                      className="text-text-secondary text-sm flex-1"
-                      numberOfLines={1}
-                    >
-                      {item.name} × {item.quantity}
-                    </Text>
-                  ))}
+                  <View className="mb-4 bg-gray-50/50 p-3 rounded-xl">
+                    {order.orderItems.map((item, index) => (
+                      <View key={item._id} className="flex-row items-center justify-between mb-1 last:mb-0">
+                        <Text className="text-text-secondary text-xs font-semibold flex-1" numberOfLines={1}>
+                          {item.name}
+                        </Text>
+                        <Text className="text-text-tertiary text-xs font-bold ml-2">×{item.quantity}</Text>
+                      </View>
+                    ))}
+                  </View>
 
-                  <View className="border-t border-background-lighter pt-3 flex-row justify-between items-center">
+                  <View className="border-t border-gray-50 pt-4 flex-row justify-between items-center">
                     <View>
-                      <Text className="text-text-secondary text-xs mb-1">{totalItems} items</Text>
-                      <Text className="text-primary font-bold text-xl">
+                      <Text className="text-text-tertiary text-[10px] font-bold uppercase tracking-widest mb-1">
+                        {totalItems} {totalItems === 1 ? 'item' : 'items'}
+                      </Text>
+                      <Text className="text-primary font-black text-2xl">
                         ${order.totalPrice.toFixed(2)}
                       </Text>
                     </View>
 
                     {order.status === "delivered" &&
                       (order.hasReviewed ? (
-                        <View className="bg-primary/20 px-5 py-3 rounded-full flex-row items-center">
-                          <Ionicons name="checkmark-circle" size={18} color="#1DB954" />
-                          <Text className="text-primary font-bold text-sm ml-2">Reviewed</Text>
+                        <View className="bg-green-50 px-4 py-2 rounded-xl flex-row items-center border border-green-100">
+                          <Ionicons name="checkmark-circle" size={16} color="#10B981" />
+                          <Text className="text-green-600 font-black text-xs uppercase tracking-tighter ml-1.5">Reviewed</Text>
                         </View>
                       ) : (
                         <TouchableOpacity
-                          className="bg-primary px-5 py-3 rounded-full flex-row items-center"
+                          className="bg-primary px-5 py-3 rounded-xl flex-row items-center shadow-md shadow-primary/20"
                           activeOpacity={0.7}
                           onPress={() => handleOpenRating(order)}
                         >
-                          <Ionicons name="star" size={18} color="#121212" />
-                          <Text className="text-background font-bold text-sm ml-2">
-                            Leave Rating
+                          <Ionicons name="star" size={16} color="#FFFFFF" />
+                          <Text className="text-white font-black text-xs uppercase tracking-tighter ml-1.5">
+                            Rate Items
                           </Text>
                         </TouchableOpacity>
                       ))}
                   </View>
                 </View>
+
               );
             })}
           </View>
@@ -192,20 +204,22 @@ export default OrdersScreen;
 
 function LoadingUI() {
   return (
-    <View className="flex-1 items-center justify-center">
-      <ActivityIndicator size="large" color="#00D9FF" />
-      <Text className="text-text-secondary mt-4">Loading orders...</Text>
+    <View className="flex-1 bg-white items-center justify-center">
+      <ActivityIndicator size="large" color="#4F46E5" />
+      <Text className="text-text-secondary font-semibold mt-4">Loading order history...</Text>
     </View>
   );
 }
 
 function ErrorUI() {
   return (
-    <View className="flex-1 items-center justify-center px-6">
-      <Ionicons name="alert-circle-outline" size={64} color="#FF6B6B" />
-      <Text className="text-text-primary font-semibold text-xl mt-4">Failed to load orders</Text>
-      <Text className="text-text-secondary text-center mt-2">
-        Please check your connection and try again
+    <View className="flex-1 bg-white items-center justify-center px-6">
+      <View className="bg-red-50 p-10 rounded-full mb-6">
+        <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
+      </View>
+      <Text className="text-text-primary font-black text-2xl mt-4">Oops! Error</Text>
+      <Text className="text-text-secondary text-center mt-2 font-medium">
+        We couldn't load your orders. Please try again.
       </Text>
     </View>
   );
@@ -213,12 +227,15 @@ function ErrorUI() {
 
 function EmptyUI() {
   return (
-    <View className="flex-1 items-center justify-center px-6">
-      <Ionicons name="receipt-outline" size={80} color="#666" />
-      <Text className="text-text-primary font-semibold text-xl mt-4">No orders yet</Text>
-      <Text className="text-text-secondary text-center mt-2">
-        Your order history will appear here
+    <View className="flex-1 bg-white items-center justify-center px-6">
+      <View className="bg-indigo-50 p-10 rounded-full mb-6">
+        <Ionicons name="receipt-outline" size={80} color="#4F46E5" />
+      </View>
+      <Text className="text-text-primary font-black text-2xl mt-4">No Orders Yet</Text>
+      <Text className="text-text-secondary text-center mt-2 font-medium">
+        Your order history will appear here once you've made a purchase.
       </Text>
     </View>
   );
 }
+
