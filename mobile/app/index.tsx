@@ -66,8 +66,6 @@ const LandingPage = () => {
               description="Curated selection of premium items"
             />
           </View>
-
-          {/* CTA Buttons */}
           <View className="gap-4 pb-10">
             <TouchableOpacity
               className="bg-primary rounded-2xl py-5 px-6 flex-row items-center justify-center"
@@ -76,14 +74,6 @@ const LandingPage = () => {
             >
               <Text className="text-background font-bold text-lg mr-2">Get Started</Text>
               <Ionicons name="arrow-forward" size={20} color="#121212" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              className="bg-surface rounded-2xl py-5 px-6 flex-row items-center justify-center"
-              activeOpacity={0.9}
-              onPress={() => router.push("/(auth)")}
-            >
-              <Text className="text-text-primary font-semibold text-base">Sign In</Text>
             </TouchableOpacity>
           </View>
         </View>
