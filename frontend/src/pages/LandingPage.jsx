@@ -11,30 +11,31 @@ const LandingPage = () => {
       name: 'Premium Leather Bag',
       price: 120,
       category: 'Accessories',
-      image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=400&q=80',
+      image: '/bag.png',
     },
     {
       id: 2,
       name: 'Wireless Headphones',
       price: 250,
       category: 'Electronics',
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80',
+      image: '/headphone.png',
     },
     {
       id: 3,
       name: 'Minimalist Watch',
       price: 180,
       category: 'Accessories',
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
+      image: '/watch.png',
     },
     {
       id: 4,
       name: 'Smart Home Hub',
       price: 95,
       category: 'Electronics',
-      image: 'https://images.unsplash.com/photo-1589492477829-5e65395b66cc?auto=format&fit=crop&w=400&q=80',
+      image: '/wifi.png',
     },
   ];
+
 
   /* ---------------- STATE ---------------- */
   const [activeCategory, setActiveCategory] = useState('All');
@@ -124,22 +125,45 @@ const LandingPage = () => {
       </nav>
 
       {/* ================= HERO ================= */}
-      <header className="bg-indigo-50 px-6 py-24">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-6xl font-extrabold">
-            Elevate Your <span className="text-indigo-600">Lifestyle</span>
+      <header className="relative min-h-[80vh] flex items-center px-6 overflow-hidden">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/hero.png"
+            alt="Luxury Lifestyle"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10 w-full">
+          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.2em] text-indigo-600 uppercase bg-indigo-50 rounded-full">
+            2025 Collection
+          </span>
+          <h1 className="text-6xl md:text-8xl font-black leading-[1.1] tracking-tight">
+            Elevate Your <br />
+            <span className="text-indigo-600">Lifestyle.</span>
           </h1>
-          <p className="max-w-xl text-gray-600 mt-6">
-            Premium products crafted for modern living.
+          <p className="max-w-xl text-xl text-gray-600 mt-8 mb-10 leading-relaxed font-medium">
+            Discover a curated selection of premium essentials designed for the modern individual who values both form and function.
           </p>
-          <button
-            onClick={() => scrollTo('shop')}
-            className="mt-8 px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold"
-          >
-            Shop Now
-          </button>
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => scrollTo('shop')}
+              className="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-bold text-lg hover:bg-indigo-700 hover:shadow-2xl hover:shadow-indigo-200 transition-all transform hover:-translate-y-1"
+            >
+              Shop the Collection
+            </button>
+            <button
+              onClick={() => scrollTo('about')}
+              className="px-10 py-5 border-2 border-gray-200 bg-white/50 backdrop-blur-sm text-gray-900 rounded-2xl font-bold text-lg hover:bg-white hover:border-indigo-600 transition-all"
+            >
+              Our Story
+            </button>
+          </div>
         </div>
       </header>
+
 
       {/* ================= SHOP ================= */}
       <section id="shop" className="py-24 px-6 max-w-7xl mx-auto">
@@ -168,11 +192,10 @@ const LandingPage = () => {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2 rounded-full font-bold ${
-                  activeCategory === cat
+                className={`px-6 py-2 rounded-full font-bold ${activeCategory === cat
                     ? 'bg-indigo-600 text-white'
                     : 'bg-white border'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -259,35 +282,46 @@ const ProductCard = ({ product, addToCart, toggleWishlist, wishlist }) => {
   const isWishlisted = wishlist.some((p) => p.id === product.id);
 
   return (
-    <div className="bg-white border rounded-2xl p-6 hover:shadow-lg transition">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-48 object-cover rounded-xl mb-4"
-      />
-      <h3 className="font-bold">{product.name}</h3>
-      <p className="text-gray-400 text-sm">{product.category}</p>
-      <p className="text-indigo-600 font-bold mt-2">${product.price}</p>
-
-      <div className="flex gap-2 mt-4">
-        <button
-          onClick={() => addToCart(product)}
-          className="flex-1 py-2 bg-indigo-600 text-white rounded-lg"
-        >
-          Add
-        </button>
+    <div className="group bg-white border border-gray-100 rounded-[2rem] p-4 hover:shadow-2xl hover:shadow-indigo-100 transition-all duration-500 transform hover:-translate-y-2">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-6">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
         <button
           onClick={() => toggleWishlist(product)}
-          className={`px-4 rounded-lg ${
-            isWishlisted ? 'bg-pink-500 text-white' : 'border'
-          }`}
+          className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-md transition-all duration-300 ${isWishlisted
+              ? 'bg-pink-500 text-white shadow-lg'
+              : 'bg-white/80 text-gray-400 hover:text-pink-500'
+            }`}
         >
           ❤️
+        </button>
+      </div>
+
+      <div className="px-2">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">
+          {product.category}
+        </span>
+        <h3 className="font-bold text-xl text-gray-900 group-hover:text-indigo-600 transition-colors">
+          {product.name}
+        </h3>
+        <p className="text-indigo-600 font-black text-2xl mt-2">
+          ${product.price}
+        </p>
+
+        <button
+          onClick={() => addToCart(product)}
+          className="mt-6 w-full py-4 bg-gray-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all shadow-lg hover:shadow-indigo-200"
+        >
+          Add to Bag
         </button>
       </div>
     </div>
   );
 };
+
 
 const Stat = ({ title, desc }) => (
   <div className="bg-gray-50 p-8 rounded-2xl text-center">
