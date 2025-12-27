@@ -167,69 +167,69 @@ function ProductsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {products.map((product) => {
-          const status = getStockStatusBadge(product.stock);
+            const status = getStockStatusBadge(product.stock);
 
-          return (
-            <div key={product._id} className="card bg-base-100 shadow-xl">
-              <div className="card-body">
-                <div className="flex items-center gap-6">
-                  <div className="avatar">
-                    <div className="w-20 rounded-xl bg-base-300 flex items-center justify-center">
-                      {product.images && product.images[0] ? (
-                        <img src={product.images[0]} alt={product.name} />
-                      ) : (
-                        <ImageIcon className="w-8 h-8 text-base-content/30" />
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="card-title">{product.name}</h3>
-                        <p className="text-base-content/70 text-sm">{product.category}</p>
-                      </div>
-                      <div className={`badge ${status.class}`}>{status.text}</div>
-                    </div>
-                    <div className="flex items-center gap-6 mt-4">
-                      <div>
-                        <p className="text-xs text-base-content/70">Price</p>
-                        <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-base-content/70">Stock</p>
-                        <p className="font-bold text-lg">{product.stock} units</p>
+            return (
+              <div key={product._id} className="card bg-base-100 shadow-xl">
+                <div className="card-body">
+                  <div className="flex items-center gap-6">
+                    <div className="avatar">
+                      <div className="w-20 rounded-xl bg-base-300 flex items-center justify-center">
+                        {product.images && product.images[0] ? (
+                          <img src={product.images[0]} alt={product.name} />
+                        ) : (
+                          <ImageIcon className="w-8 h-8 text-base-content/30" />
+                        )}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="card-actions">
-                    <button
-                      className="btn btn-square btn-ghost"
-                      onClick={() => handleEdit(product)}
-                    >
-                      <PencilIcon className="w-5 h-5" />
-                    </button>
-                    <button
-                      className="btn btn-square btn-ghost text-error"
-                      onClick={() => {
-                        if (confirm(`Are you sure you want to delete "${product.name}"?`)) {
-                          deleteProductMutation.mutate(product._id);
-                        }
-                      }}
-                      disabled={deleteProductMutation.isPending}
-                    >
-                      {deleteProductMutation.isPending ? (
-                        <span className="loading loading-spinner"></span>
-                      ) : (
-                        <Trash2Icon className="w-5 h-5" />
-                      )}
-                    </button>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="card-title">{product.name}</h3>
+                          <p className="text-base-content/70 text-sm">{product.category}</p>
+                        </div>
+                        <div className={`badge ${status.class}`}>{status.text}</div>
+                      </div>
+                      <div className="flex items-center gap-6 mt-4">
+                        <div>
+                          <p className="text-xs text-base-content/70">Price</p>
+                          <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-base-content/70">Stock</p>
+                          <p className="font-bold text-lg">{product.stock} units</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="card-actions">
+                      <button
+                        className="btn btn-square btn-ghost"
+                        onClick={() => handleEdit(product)}
+                      >
+                        <PencilIcon className="w-5 h-5" />
+                      </button>
+                      <button
+                        className="btn btn-square btn-ghost text-error"
+                        onClick={() => {
+                          if (confirm(`Are you sure you want to delete "${product.name}"?`)) {
+                            deleteProductMutation.mutate(product._id);
+                          }
+                        }}
+                        disabled={deleteProductMutation.isPending}
+                      >
+                        {deleteProductMutation.isPending ? (
+                          <span className="loading loading-spinner"></span>
+                        ) : (
+                          <Trash2Icon className="w-5 h-5" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
+            );
           })}
         </div>
       )}
@@ -290,10 +290,11 @@ function ProductsPage() {
                   required
                 >
                   <option value="">Select category</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Fashion">Fashion</option>
-                  <option value="Sports">Sports</option>
-                  <option value="Books">Books</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="sports">Sports</option>
+                  <option value="books">Books</option>
+                  <option value="home">Home</option>
                 </select>
               </div>
             </div>

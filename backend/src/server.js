@@ -27,12 +27,21 @@ import { connectDB } from "./config/db.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { swaggerOptions } from "./config/swagger.js";
+import { globalErrorHandler } from "./middleware/error.middleware.js";
+import logger from "./utils/logger.js";
 
 const app = express();
 const __dirname = path.resolve();
 
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(express.json());
+
+// Request Logging Middleware
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.use(clerkMiddleware());
 app.use(
   "/api/payment",
@@ -68,6 +77,9 @@ app.use("/api/cart", cartRoutes);
 app.get("/api/health", (req, res) => {
   res.status(200).json({ message: "Success" });
 });
+
+// Error handling
+app.use(globalErrorHandler);
 if (ENV.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../admin/dist")));
   app.get("/*", (req, res) => {
