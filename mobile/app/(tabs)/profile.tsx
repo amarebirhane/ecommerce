@@ -37,7 +37,7 @@ const ProfileScreen = () => {
           onPress: async () => {
             try {
               await signOut();
-              // The Redirect in (tabs)/_layout.tsx will handle the navigation to "/"
+              // The Redirect in (tabs)/_layout.tsx will handle the navigation to "/(auth)"
             } catch (error) {
               console.error("Error signing out:", error);
             }
