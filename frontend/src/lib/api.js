@@ -3,18 +3,15 @@ import axiosInstance from "./axios";
 export const productApi = {
   getAll: async () => {
     const { data } = await axiosInstance.get("/admin/products");
-    // Backend returns products as array directly
     return data;
   },
 
   create: async (formData) => {
-    // Don't set Content-Type header - let browser set it with boundary for FormData
     const { data } = await axiosInstance.post("/admin/products", formData);
     return data;
   },
 
   update: async ({ id, formData }) => {
-    // Don't set Content-Type header - let browser set it with boundary for FormData
     const { data } = await axiosInstance.put(`/admin/products/${id}`, formData);
     return data;
   },

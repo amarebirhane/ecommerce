@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-// ============================================================================
-// COMMON VALIDATORS
-// ============================================================================
 
 export const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format");
 
@@ -11,9 +8,6 @@ export const paginationSchema = z.object({
     limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
-// ============================================================================
-// ADDRESS SCHEMAS
-// ============================================================================
 
 export const addressSchema = z.object({
     label: z.string().min(1, "Label is required").max(50, "Label too long"),
@@ -29,11 +23,6 @@ export const addressSchema = z.object({
 export const updateAddressSchema = addressSchema.partial();
 
 
-
-// ============================================================================
-// PRODUCT SCHEMAS
-// ============================================================================
-
 export const productSchema = z.object({
     name: z.string().min(2, "Product name is required").max(200, "Name too long"),
     description: z.string().min(10, "Description is required").max(2000, "Description too long"),
@@ -46,12 +35,6 @@ export const productSchema = z.object({
 
 export const updateProductSchema = productSchema.partial();
 
-
-
-// ============================================================================
-// CART SCHEMAS
-// ============================================================================
-
 export const addToCartSchema = z.object({
     productId: objectIdSchema,
     quantity: z.coerce.number().int().positive("Quantity must be at least 1").max(99, "Max 99 items").default(1),
@@ -60,12 +43,6 @@ export const addToCartSchema = z.object({
 export const updateCartItemSchema = z.object({
     quantity: z.coerce.number().int().positive("Quantity must be at least 1").max(99, "Max 99 items"),
 });
-
-
-
-// ============================================================================
-// ORDER SCHEMAS
-// ============================================================================
 
 export const shippingAddressSchema = z.object({
     fullName: z.string().min(2, "Full name is required").max(100),
@@ -102,23 +79,11 @@ export const updateOrderStatusSchema = z.object({
     }),
 });
 
-
-
-// ============================================================================
-// REVIEW SCHEMAS
-// ============================================================================
-
 export const createReviewSchema = z.object({
     productId: objectIdSchema,
     orderId: objectIdSchema,
     rating: z.coerce.number().int().min(1, "Rating must be at least 1").max(5, "Rating cannot exceed 5"),
 });
-
-
-
-// ============================================================================
-// PAYMENT SCHEMAS
-// ============================================================================
 
 export const createPaymentIntentSchema = z.object({
     cartItems: z.array(z.object({
@@ -132,12 +97,6 @@ export const createPaymentIntentSchema = z.object({
     })).min(1, "Cart cannot be empty"),
     shippingAddress: shippingAddressSchema,
 });
-
-
-
-// ============================================================================
-// WISHLIST SCHEMAS
-// ============================================================================
 
 export const wishlistSchema = z.object({
     productId: objectIdSchema,

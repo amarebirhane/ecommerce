@@ -1,10 +1,6 @@
 import { Document, Types } from "mongoose";
 import { Request } from "express";
 
-// ============================================================================
-// BASE INTERFACES
-// ============================================================================
-
 export interface IAddress {
     _id?: Types.ObjectId;
     label: string;
@@ -107,18 +103,11 @@ export interface IReview extends Document {
     updatedAt: Date;
 }
 
-// ============================================================================
-// REQUEST INTERFACES
-// ============================================================================
 
 export interface AuthenticatedRequest extends Request {
     user: IUser;
     auth: () => { userId: string | null };
 }
-
-// ============================================================================
-// API RESPONSE INTERFACES
-// ============================================================================
 
 export interface ApiResponse<T = unknown> {
     success: boolean;
@@ -141,10 +130,6 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
         totalPages: number;
     };
 }
-
-// ============================================================================
-// DASHBOARD STATS
-// ============================================================================
 
 export interface DashboardStats {
     totalRevenue: number;

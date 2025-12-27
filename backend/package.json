@@ -6,13 +6,15 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "seed:products": "node src/seeds/index.js"
+    "seed:products": "node src/seeds/index.js",
+    "make-admin": "node src/seeds/create-admin.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/express": "^1.7.60",
     "@types/cors": "^2.8.19",
     "@types/node": "^25.0.3",
@@ -30,6 +32,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "typescript": "^5.9.3",
+    "winston": "^3.19.0",
     "zod": "^4.2.1"
   },
   "devDependencies": {

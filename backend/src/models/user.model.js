@@ -1,65 +1,35 @@
+// models/user.model.js
 import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema({
-  label: {
-    type: String,
-    required: true,
-  },
-  fullName: {
-    type: String,
-    required: true,
-  },
-  streetAddress: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  zipCode: {
-    type: String,
-    required: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
-  isDefault: {
-    type: Boolean,
-    default: false,
-  },
+  label: { type: String, required: true },
+  fullName: { type: String, required: true },
+  streetAddress: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  zipCode: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
+  isDefault: { type: Boolean, default: false },
 });
 
 const userSchema = new mongoose.Schema(
   {
-    email: {
+    email: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    imageUrl: { type: String, default: "" },
+
+    clerkId: { type: String, unique: true, required: true },
+
+    role: {
       type: String,
-      required: true,
-      unique: true,
+      enum: ["user", "admin"],
+      default: "user",
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    imageUrl: {
-      type: String,
-      default: "",
-    },
-    clerkId: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    stripeCustomerId: {
-      type: String,
-      default: "",
-    },
+
+    stripeCustomerId: { type: String, default: "" },
+
     addresses: [addressSchema],
+
     wishlist: [
       {
         type: mongoose.Schema.Types.ObjectId,
