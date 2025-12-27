@@ -23,7 +23,7 @@ function OrdersPage() {
     updateStatusMutation.mutate({ orderId, status: newStatus });
   };
 
-  const orders = ordersData?.orders || [];
+  const orders = (Array.isArray(ordersData) ? ordersData : ordersData?.orders) || [];
 
   return (
     <div className="space-y-6">

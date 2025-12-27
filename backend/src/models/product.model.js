@@ -1,4 +1,4 @@
-// product.model.js
+// models/product.model.js
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
@@ -28,14 +28,13 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, "Product category is required"],
-      enum: ["electronics", "fashion", "books", "home", "other"], // adjust as needed
+      enum: ["electronics", "fashion", "books", "home", "other"],
     },
     images: {
       type: [String],
-      required: [true, "At least one image is required"],
       validate: {
         validator: function (arr) {
-          return arr.length > 0 && arr.length <= 3; // max 3 images
+          return arr.length <= 3; // max 3 images
         },
         message: "Images array must have 1 to 3 items",
       },
@@ -55,7 +54,6 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Optional: index category for faster queries
 productSchema.index({ category: 1 });
 
 export const Product = mongoose.model("Product", productSchema);

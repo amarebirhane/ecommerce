@@ -1,15 +1,25 @@
 import { Product } from "../models/product.model.js";
+import mongoose from "mongoose";
 
+// Get a single product by ID
 export async function getProductById(req, res) {
   try {
     const { id } = req.params;
+
+    // Check for valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
     const product = await Product.findById(id);
 
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
     res.status(200).json(product);
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error getProductById:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
