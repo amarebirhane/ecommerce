@@ -174,7 +174,7 @@ const CartScreen = () => {
                 {/* product image */}
                 <View className="relative">
                   <Image
-                    source={item.product.images[0]}
+                    source={{ uri: item.product.images[0] }}
                     className="bg-background-lighter"
                     contentFit="cover"
                     style={{ width: 112, height: 112, borderRadius: 16 }}

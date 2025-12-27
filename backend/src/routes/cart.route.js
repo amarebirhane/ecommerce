@@ -10,8 +10,10 @@ import {
 
 const router = Router();
 
+// Protect all cart routes
 router.use(protectRoute);
 
+// Cart routes
 router.get("/", getCart);
 router.post("/", addToCart);
 router.put("/:productId", updateCartItem);

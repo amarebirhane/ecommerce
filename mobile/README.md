@@ -49,7 +49,28 @@ mobile/
    ```
 
 3. Configure environment variables:
-   Create a `.env` file with your Clerk and Stripe keys (see `.env.example` if available).
+   Create a `.env` file in the mobile directory with the following variables:
+   
+   ```env
+   # Clerk Authentication - Get from https://dashboard.clerk.com
+   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key_here
+   
+   # Stripe Payments - Get from https://dashboard.stripe.com/apikeys
+   EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key_here
+   
+   # Backend API URL
+   # For physical devices, replace localhost with your computer's IP address
+   # Example: EXPO_PUBLIC_API_URL=http://192.168.1.100:5000/api
+   EXPO_PUBLIC_API_URL=http://localhost:5000/api
+   
+   # Sentry Error Tracking (Optional)
+   EXPO_PUBLIC_SENTRY_DSN=your_sentry_dsn_here
+   ```
+   
+   **Important:** 
+   - For physical device testing, replace `localhost` in `EXPO_PUBLIC_API_URL` with your computer's local IP address
+   - Make sure your backend server is running on port 5000 (or update the URL accordingly)
+   - The backend server must have CORS enabled for the mobile app's origin
 
 ### Running the App
 
@@ -66,7 +87,10 @@ npx expo start
 
 ## 📱 Features
 
+- **Landing Page:** Beautiful welcome screen with app features and call-to-action
 - **Authentication:** Social login (Google, Apple) via Clerk.
-- **Product Browsing:** Home screen feed and product search.
-- **Cart & Checkout:** Full shopping cart with Stripe payment integration.
+- **Product Browsing:** Home screen feed with category filtering and search.
+- **Product Details:** Full product information with image gallery and reviews.
+- **Cart & Checkout:** Full shopping cart with quantity management and Stripe payment integration.
 - **User Profile:** Manage orders, addresses, and wishlist.
+- **Real-time Updates:** TanStack Query for efficient data fetching and caching.

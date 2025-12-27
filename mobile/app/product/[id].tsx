@@ -97,7 +97,7 @@ const ProductDetailScreen = () => {
           >
             {product.images.map((image: string, index: number) => (
               <View key={index} style={{ width }}>
-                <Image source={image} style={{ width, height: 400 }} contentFit="cover" />
+                <Image source={{ uri: image }} style={{ width, height: 400 }} contentFit="cover" />
               </View>
             ))}
           </ScrollView>

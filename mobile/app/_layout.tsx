@@ -57,9 +57,17 @@ const queryClient = new QueryClient({
 
 export default Sentry.wrap(function RootLayout() {
   const stripeKey = process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
+  const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
+
+  if (!clerkPublishableKey) {
+    console.warn("⚠️ EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY is not set. Authentication will not work.");
+  }
 
   return (
-    <ClerkProvider tokenCache={tokenCache}>
+    <ClerkProvider 
+      publishableKey={clerkPublishableKey}
+      tokenCache={tokenCache}
+    >
       <QueryClientProvider client={queryClient}>
         <StripeProvider publishableKey={stripeKey}>
           <Stack screenOptions={{ headerShown: false }} />

@@ -14,22 +14,23 @@ import { upload } from "../middleware/multer.middleware.js";
 
 const router = Router();
 
-// optimization - DRY
+// Protect all routes and restrict to admin
 router.use(protectRoute, adminOnly);
 
+// Product routes
 router.post("/products", upload.array("images", 3), createProduct);
 router.get("/products", getAllProducts);
 router.put("/products/:id", upload.array("images", 3), updateProduct);
 router.delete("/products/:id", deleteProduct);
 
+// Order routes
 router.get("/orders", getAllOrders);
 router.patch("/orders/:orderId/status", updateOrderStatus);
 
+// Customer routes
 router.get("/customers", getAllCustomers);
 
+// Dashboard stats
 router.get("/stats", getDashboardStats);
-
-// PUT: Used for full resource replacement, updating the entire resource
-// PATCH: Used for partial resource updates, updating a specific part of the resource
 
 export default router;

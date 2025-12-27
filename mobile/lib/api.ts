@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 // Use environment variable for API URL (set in .env file)
 // For physical devices, use your computer's IP address instead of localhost
+// Example: EXPO_PUBLIC_API_URL=http://192.168.1.100:5000/api
 const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const api = axios.create({
