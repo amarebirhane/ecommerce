@@ -30,19 +30,20 @@ const ProfileScreen = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* HEADER */}
-        <View className="px-6 pb-8">
-          <View className="bg-surface rounded-3xl p-6">
+        <View className="px-6 pb-8 pt-8">
+          <View className="bg-white border border-gray-100 rounded-[2.5rem] p-8 shadow-sm">
             <View className="flex-row items-center">
               <View className="relative">
                 <Image
                   source={user?.imageUrl}
-                  style={{ width: 80, height: 80, borderRadius: 40 }}
+                  style={{ width: 90, height: 90, borderRadius: 45 }}
                   transition={200}
                 />
-                <View className="absolute -bottom-1 -right-1 bg-primary rounded-full size-7 items-center justify-center border-2 border-surface">
-                  <Ionicons name="checkmark" size={16} color="#121212" />
+                <View className="absolute -bottom-1 -right-1 bg-primary rounded-full size-8 items-center justify-center border-4 border-white">
+                  <Ionicons name="checkmark" size={16} color="#FFF" />
                 </View>
               </View>
+
 
               <View className="flex-1 ml-4">
                 <Text className="text-text-primary text-2xl font-bold mb-1">
@@ -57,64 +58,70 @@ const ProfileScreen = () => {
         </View>
 
         {/* MENU ITEMS */}
-        <View className="flex-row flex-wrap gap-2 mx-6 mb-3">
+        <View className="flex-row flex-wrap gap-4 mx-6 mb-6">
           {MENU_ITEMS.map((item) => (
             <TouchableOpacity
               key={item.id}
-              className="bg-surface rounded-2xl p-6 items-center justify-center"
-              style={{ width: "48%" }}
+              className="bg-white border border-gray-50 rounded-[2rem] p-6 items-center justify-center shadow-sm"
+              style={{ width: "47%" }}
               activeOpacity={0.7}
               onPress={() => handleMenuPress(item.action)}
             >
               <View
-                className="rounded-full w-16 h-16 items-center justify-center mb-4"
-                style={{ backgroundColor: item.color + "20" }}
+                className="rounded-2xl w-14 h-14 items-center justify-center mb-4 shadow-sm"
+                style={{ backgroundColor: item.color }}
               >
-                <Ionicons name={item.icon} size={28} color={item.color} />
+                <Ionicons name={item.icon as any} size={28} color="#FFF" />
               </View>
-              <Text className="text-text-primary font-bold text-base">{item.title}</Text>
+              <Text className="text-text-primary font-black text-sm uppercase tracking-tighter">{item.title}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
+
         {/* NOTIFICATONS BTN */}
-        <View className="mb-3 mx-6 bg-surface rounded-2xl p-4">
+        <View className="mb-4 mx-6 bg-white border border-gray-100 rounded-3xl p-2 shadow-sm">
           <TouchableOpacity
-            className="flex-row items-center justify-between py-2"
+            className="flex-row items-center justify-between p-4"
             activeOpacity={0.7}
           >
             <View className="flex-row items-center">
-              <Ionicons name="notifications-outline" size={22} color="#FFFFFF" />
-              <Text className="text-text-primary font-semibold ml-3">Notifications</Text>
+              <View className="bg-indigo-50 p-2 rounded-xl mr-3">
+                <Ionicons name="notifications-outline" size={20} color="#4F46E5" />
+              </View>
+              <Text className="text-text-primary font-bold">Notifications</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#666" />
+            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
           </TouchableOpacity>
-        </View>
 
-        {/* PRIVACY AND SECURTIY LINK */}
-        <View className="mb-3 mx-6 bg-surface rounded-2xl p-4">
+          <View className="h-[1px] bg-gray-50 mx-4" />
+
           <TouchableOpacity
-            className="flex-row items-center justify-between py-2"
+            className="flex-row items-center justify-between p-4"
             activeOpacity={0.7}
             onPress={() => router.push("/privacy-security")}
           >
             <View className="flex-row items-center">
-              <Ionicons name="shield-checkmark-outline" size={22} color="#FFFFFF" />
-              <Text className="text-text-primary font-semibold ml-3">Privacy & Security</Text>
+              <View className="bg-green-50 p-2 rounded-xl mr-3">
+                <Ionicons name="shield-checkmark-outline" size={20} color="#10B981" />
+              </View>
+              <Text className="text-text-primary font-bold">Privacy & Security</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#666" />
+            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
 
+
         {/* SIGNOUT BTN */}
         <TouchableOpacity
-          className="mx-6 mb-3 bg-surface rounded-2xl py-5 flex-row items-center justify-center border-2 border-red-500/20"
+          className="mx-6 mb-8 bg-red-50 rounded-3xl py-5 flex-row items-center justify-center border border-red-100"
           activeOpacity={0.8}
           onPress={() => signOut()}
         >
           <Ionicons name="log-out-outline" size={22} color="#EF4444" />
-          <Text className="text-red-500 font-bold text-base ml-2">Sign Out</Text>
+          <Text className="text-red-500 font-black uppercase tracking-widest text-sm ml-2">Sign Out</Text>
         </TouchableOpacity>
+
 
         <Text className="mx-6 mb-3 text-center text-text-secondary text-xs">Version 1.0.0</Text>
       </ScrollView>

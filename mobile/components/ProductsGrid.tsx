@@ -96,9 +96,9 @@ const ProductsGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
             disabled={isAddingToCart}
           >
             {isAddingToCart ? (
-              <ActivityIndicator size="small" color="#121212" />
+              <ActivityIndicator size="small" color="#FFFFFF" />
             ) : (
-              <Ionicons name="add" size={18} color="#121212" />
+              <Ionicons name="add" size={18} color="#FFFFFF" />
             )}
           </TouchableOpacity>
         </View>
@@ -109,11 +109,12 @@ const ProductsGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
   if (isLoading) {
     return (
       <View className="py-20 items-center justify-center">
-        <ActivityIndicator size="large" color="#00D9FF" />
+        <ActivityIndicator size="large" color="#4F46E5" />
         <Text className="text-text-secondary mt-4">Loading products...</Text>
       </View>
     );
   }
+
 
   if (isError) {
     return (

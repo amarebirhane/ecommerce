@@ -15,35 +15,38 @@ const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#1DB954",
-        tabBarInactiveTintColor: "#B3B3B3",
+        tabBarActiveTintColor: "#4F46E5",
+        tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: {
           position: "absolute",
-          backgroundColor: "transparent",
+          backgroundColor: "#FFFFFFE6", // White with opacity
           borderTopWidth: 0,
-          height: 32 + insets.bottom,
-          paddingTop: 4,
-          marginHorizontal: 100,
-          marginBottom: insets.bottom,
-          borderRadius: 24,
-          overflow: "hidden",
+          height: 60 + insets.bottom,
+          paddingTop: 10,
+          marginHorizontal: 20,
+          marginBottom: insets.bottom + 10,
+          borderRadius: 30,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
+          elevation: 5,
         },
         tabBarBackground: () => (
           <BlurView
-            intensity={80}
-            tint="dark"
+            intensity={50}
+            tint="light"
             style={StyleSheet.absoluteFill}
-            // StyleSheet.absoluteFill is equal to this 👇
-            // { position: "absolute", top: 0, right: 0, left: 0, bottom: 0 }
           />
         ),
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: 600,
+          fontWeight: "600",
         },
         headerShown: false,
       }}
     >
+
       <Tabs.Screen
         name="index"
         options={{

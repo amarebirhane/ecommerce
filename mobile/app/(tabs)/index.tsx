@@ -8,11 +8,12 @@ import { View, Text, ScrollView, TouchableOpacity, TextInput, Image } from "reac
 
 const CATEGORIES = [
   { name: "All", icon: "grid-outline" as const },
-  { name: "Electronics", image: require("@/assets/images/electronics.png") },
-  { name: "Fashion", image: require("@/assets/images/fashion.png") },
-  { name: "Sports", image: require("@/assets/images/sports.png") },
-  { name: "Books", image: require("@/assets/images/books.png") },
+  { name: "Electronics", icon: "phone-portrait-outline" as const },
+  { name: "Fashion", icon: "shirt-outline" as const },
+  { name: "Sports", icon: "football-outline" as const },
+  { name: "Books", icon: "book-outline" as const },
 ];
+
 
 const ShopScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,17 +49,18 @@ const ShopScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* HEADER */}
-        <View className="px-6 pb-4 pt-6">
-          <View className="flex-row items-center justify-between mb-6">
+        <View className="px-6 pb-4 pt-8">
+          <View className="flex-row items-center justify-between mb-8">
             <View>
-              <Text className="text-text-primary text-3xl font-bold tracking-tight">Shop</Text>
-              <Text className="text-text-secondary text-sm mt-1">Browse all products</Text>
+              <Text className="text-primary text-4xl font-black tracking-tighter">LUXE.</Text>
+              <Text className="text-text-secondary text-sm font-semibold tracking-wider uppercase mt-1">Premium Shop</Text>
             </View>
 
-            <TouchableOpacity className="bg-surface/50 p-3 rounded-full" activeOpacity={0.7}>
-              <Ionicons name="options-outline" size={22} color={"#fff"} />
+            <TouchableOpacity className="bg-surface p-4 rounded-full shadow-sm" activeOpacity={0.7}>
+              <Ionicons name="notifications-outline" size={24} color={"#4F46E5"} />
             </TouchableOpacity>
           </View>
+
 
           {/* SEARCH BAR */}
           <View className="bg-surface flex-row items-center px-5 py-4 rounded-2xl">
@@ -83,23 +85,28 @@ const ShopScreen = () => {
             {CATEGORIES.map((category) => {
               const isSelected = selectedCategory === category.name;
               return (
-                <TouchableOpacity
-                  key={category.name}
-                  onPress={() => setSelectedCategory(category.name)}
-                  className={`mr-3 rounded-2xl size-20 overflow-hidden items-center justify-center ${isSelected ? "bg-primary" : "bg-surface"}`}
-                >
-                  {category.icon ? (
+                <View key={category.name} className="items-center mr-6">
+                  <TouchableOpacity
+                    onPress={() => setSelectedCategory(category.name)}
+                    className={`rounded-2xl size-16 items-center justify-center shadow-sm ${isSelected ? "bg-primary" : "bg-white border border-gray-100"
+                      }`}
+                  >
                     <Ionicons
                       name={category.icon}
-                      size={36}
-                      color={isSelected ? "#121212" : "#fff"}
+                      size={28}
+                      color={isSelected ? "#FFF" : "#4F46E5"}
                     />
-                  ) : (
-                    <Image source={category.image} className="size-12" resizeMode="contain" />
-                  )}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                  <Text
+                    className={`text-[10px] font-bold mt-2 uppercase tracking-tighter ${isSelected ? "text-primary" : "text-text-tertiary"
+                      }`}
+                  >
+                    {category.name}
+                  </Text>
+                </View>
               );
             })}
+
           </ScrollView>
         </View>
 
