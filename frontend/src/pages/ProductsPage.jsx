@@ -20,10 +20,13 @@ function ProductsPage() {
   const queryClient = useQueryClient();
 
   // fetch some data
-  const { data: products = [] } = useQuery({
+  const { data: productsData, isLoading: productsLoading } = useQuery({
     queryKey: ["products"],
     queryFn: productApi.getAll,
   });
+
+  // Backend returns products directly as array, not wrapped in an object
+  const products = Array.isArray(productsData) ? productsData : productsData?.products || [];
 
   // creating, update, deleting
   const createProductMutation = useMutation({
@@ -131,8 +134,18 @@ function ProductsPage() {
       </div>
 
       {/* PRODUCTS GRID */}
-      <div className="grid grid-cols-1 gap-4">
-        {products?.map((product) => {
+      {productsLoading ? (
+        <div className="flex justify-center py-12">
+          <span className="loading loading-spinner loading-lg" />
+        </div>
+      ) : products.length === 0 ? (
+        <div className="text-center py-12 text-base-content/60">
+          <p className="text-xl font-semibold mb-2">No products yet</p>
+          <p className="text-sm">Click "Add Product" to create your first product</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4">
+          {products.map((product) => {
           const status = getStockStatusBadge(product.stock);
 
           return (
@@ -187,8 +200,9 @@ function ProductsPage() {
               </div>
             </div>
           );
-        })}
-      </div>
+          })}
+        </div>
+      )}
 
       {/* ADD/EDIT PRODUCT MODAL */}
 

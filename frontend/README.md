@@ -49,7 +49,23 @@ npm install
 
 ### 3. Environment Setup
 
-Create a `.env` file in the root of the `frontend` directory (or ensure `.env.local` exists) and add your environment variables.
+Create a `.env` file in the root of the `frontend` directory and add your environment variables:
+
+```env
+# Clerk Authentication - Get from https://dashboard.clerk.com
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key_here
+
+# Backend API URL
+VITE_API_URL=http://localhost:5000/api
+
+# Sentry Error Tracking (Optional)
+VITE_SENTRY_DSN=your_sentry_dsn_here
+```
+
+**Important:** 
+- Make sure your backend server is running on port 5000 (or update the URL accordingly)
+- The backend server must have CORS enabled for `http://localhost:5173`
+- Your Clerk account email must match the `ADMIN_EMAIL` in your backend `.env` file for admin access
 
 ### 4. Running the Development Server
 
@@ -78,7 +94,7 @@ npm run preview
 ## 📦 Key Features
 
 - **Dashboard:** Overview of key metrics and statistics.
-- **Product Management:** Create, value, update, and delete products.
+- **Product Management:** Create, view, update, and delete products with image uploads.
 - **Order Management:** View and update order statuses.
 - **Customer Management:** View customer details and history.
 - **Authentication:** Secure login for admin users via Clerk.

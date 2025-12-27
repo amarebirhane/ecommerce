@@ -23,7 +23,7 @@ function Sidebar() {
 
         <ul className="menu w-full grow flex flex-col gap-2">
           {NAVIGATION.map((item) => {
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + "/");
             return (
               <li key={item.path}>
                 <Link

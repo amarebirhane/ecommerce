@@ -12,9 +12,9 @@ import {
 // eslint-disable-next-line
 export const NAVIGATION = [
   { name: "Dashboard", path: "/dashboard", icon: <HomeIcon className="size-5" /> },
-  { name: "Products", path: "/products", icon: <ShoppingBagIcon className="size-5" /> },
-  { name: "Orders", path: "/orders", icon: <ClipboardListIcon className="size-5" /> },
-  { name: "Customers", path: "/customers", icon: <UsersIcon className="size-5" /> },
+  { name: "Products", path: "/dashboard/products", icon: <ShoppingBagIcon className="size-5" /> },
+  { name: "Orders", path: "/dashboard/orders", icon: <ClipboardListIcon className="size-5" /> },
+  { name: "Customers", path: "/dashboard/customers", icon: <UsersIcon className="size-5" /> },
 ];
 
 function Navbar() {
@@ -28,7 +28,7 @@ function Navbar() {
 
       <div className="flex-1 px-4">
         <h1 className="text-xl font-bold">
-          {NAVIGATION.find((item) => item.path === location.pathname)?.name || "Dashboard"}
+          {NAVIGATION.find((item) => location.pathname === item.path || location.pathname.startsWith(item.path + "/"))?.name || "Dashboard"}
         </h1>
       </div>
 

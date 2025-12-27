@@ -3,6 +3,7 @@ import axiosInstance from "./axios";
 export const productApi = {
   getAll: async () => {
     const { data } = await axiosInstance.get("/admin/products");
+    // Backend returns products as array directly
     return data;
   },
 
