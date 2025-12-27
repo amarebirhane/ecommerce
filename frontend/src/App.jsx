@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import { useAuth } from "@clerk/clerk-react";
 import DashboardPage from "./pages/DashboardPage";
 import ProductsPage from "./pages/ProductsPage";
@@ -14,7 +15,7 @@ const PrivateRoute = ({ children }) => {
 
   if (!isLoaded) return <PageLoader />;
   if (!isSignedIn) return <Navigate to="/login" replace />;
-  
+
   return children;
 };
 
@@ -23,7 +24,7 @@ const PublicRoute = ({ children }) => {
 
   if (!isLoaded) return <PageLoader />;
   if (isSignedIn) return <Navigate to="/dashboard" replace />;
-  
+
   return children;
 };
 
@@ -36,6 +37,14 @@ function App() {
         element={
           <PublicRoute>
             <LoginPage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <PublicRoute>
+            <SignupPage />
           </PublicRoute>
         }
       />

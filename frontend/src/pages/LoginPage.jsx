@@ -3,7 +3,7 @@ import { SignIn } from "@clerk/clerk-react";
 function LoginPage() {
   return (
     <div className="h-screen hero">
-      <SignIn forceRedirectUrl="/dashboard" />
+      <SignIn forceRedirectUrl="/dashboard" signUpUrl="/signup" />
     </div>
   );
 }
