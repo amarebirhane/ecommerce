@@ -34,6 +34,10 @@ function ProductsPage() {
     onSuccess: () => {
       closeModal();
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboardStats"] });
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message || "Failed to create product");
     },
   });
 
@@ -42,14 +46,21 @@ function ProductsPage() {
     onSuccess: () => {
       closeModal();
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboardStats"] });
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message || "Failed to update product");
     },
   });
 
   const deleteProductMutation = useMutation({
     mutationFn: productApi.delete,
     onSuccess: () => {
-      closeModal();
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboardStats"] });
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message || "Failed to delete product");
     },
   });
 
@@ -83,15 +94,25 @@ function ProductsPage() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    if (files.length > 3) return alert("Maximum 3 images allowed");
+    if (files.length > 3) {
+      alert("Maximum 3 images allowed");
+      e.target.value = ""; // Reset file input
+      return;
+    }
 
-    // revoke previous blob URLs to free memory
+    // Keep existing images when editing, only add new ones
+    const existingPreviews = editingProduct
+      ? imagePreviews.filter((url) => !url.startsWith("blob:"))
+      : [];
+
+    // Revoke previous blob URLs to free memory (only new ones)
     imagePreviews.forEach((url) => {
       if (url.startsWith("blob:")) URL.revokeObjectURL(url);
     });
 
     setImages(files);
-    setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+    const newBlobUrls = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews([...existingPreviews, ...newBlobUrls]);
   };
 
   const handleSubmit = (e) => {
@@ -153,8 +174,12 @@ function ProductsPage() {
               <div className="card-body">
                 <div className="flex items-center gap-6">
                   <div className="avatar">
-                    <div className="w-20 rounded-xl">
-                      <img src={product.images[0]} alt={product.name} />
+                    <div className="w-20 rounded-xl bg-base-300 flex items-center justify-center">
+                      {product.images && product.images[0] ? (
+                        <img src={product.images[0]} alt={product.name} />
+                      ) : (
+                        <ImageIcon className="w-8 h-8 text-base-content/30" />
+                      )}
                     </div>
                   </div>
 
@@ -169,7 +194,7 @@ function ProductsPage() {
                     <div className="flex items-center gap-6 mt-4">
                       <div>
                         <p className="text-xs text-base-content/70">Price</p>
-                        <p className="font-bold text-lg">${product.price}</p>
+                        <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
                       </div>
                       <div>
                         <p className="text-xs text-base-content/70">Stock</p>
@@ -187,7 +212,12 @@ function ProductsPage() {
                     </button>
                     <button
                       className="btn btn-square btn-ghost text-error"
-                      onClick={() => deleteProductMutation.mutate(product._id)}
+                      onClick={() => {
+                        if (confirm(`Are you sure you want to delete "${product.name}"?`)) {
+                          deleteProductMutation.mutate(product._id);
+                        }
+                      }}
+                      disabled={deleteProductMutation.isPending}
                     >
                       {deleteProductMutation.isPending ? (
                         <span className="loading loading-spinner"></span>
@@ -206,18 +236,30 @@ function ProductsPage() {
 
       {/* ADD/EDIT PRODUCT MODAL */}
 
-      <input type="checkbox" className="modal-toggle" checked={showModal} />
+      <input
+        type="checkbox"
+        id="product-modal"
+        className="modal-toggle"
+        checked={showModal}
+        onChange={(e) => {
+          if (!e.target.checked) closeModal();
+        }}
+      />
 
-      <div className="modal">
+      <div className="modal" role="dialog">
         <div className="modal-box max-w-2xl">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-2xl">
               {editingProduct ? "Edit Product" : "Add New Product"}
             </h3>
 
-            <button onClick={closeModal} className="btn btn-sm btn-circle btn-ghost">
+            <label
+              htmlFor="product-modal"
+              className="btn btn-sm btn-circle btn-ghost"
+              onClick={closeModal}
+            >
               <XIcon className="w-5 h-5" />
-            </button>
+            </label>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -249,9 +291,9 @@ function ProductsPage() {
                 >
                   <option value="">Select category</option>
                   <option value="Electronics">Electronics</option>
-                  <option value="Accessories">Accessories</option>
                   <option value="Fashion">Fashion</option>
                   <option value="Sports">Sports</option>
+                  <option value="Books">Books</option>
                 </select>
               </div>
             </div>
@@ -327,12 +369,17 @@ function ProductsPage() {
               </div>
 
               {imagePreviews.length > 0 && (
-                <div className="flex gap-2 mt-2">
+                <div className="flex gap-2 mt-2 flex-wrap">
                   {imagePreviews.map((preview, index) => (
-                    <div key={index} className="avatar">
+                    <div key={index} className="avatar relative group">
                       <div className="w-20 rounded-lg">
                         <img src={preview} alt={`Preview ${index + 1}`} />
                       </div>
+                      {editingProduct && !preview.startsWith("blob:") && (
+                        <span className="text-xs bg-base-300 px-2 py-1 rounded absolute bottom-0 left-0 right-0 text-center opacity-75">
+                          Current
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -365,6 +412,7 @@ function ProductsPage() {
             </div>
           </form>
         </div>
+        <label htmlFor="product-modal" className="modal-backdrop" onClick={closeModal}></label>
       </div>
     </div>
   );

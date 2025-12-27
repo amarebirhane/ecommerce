@@ -11,6 +11,11 @@ const axiosInstance = axios.create({
 // Add request interceptor to include Clerk token
 axiosInstance.interceptors.request.use(
   async (config) => {
+    // Remove Content-Type header for FormData so browser can set it with boundary
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
+    }
+
     // Only add token if we're in a browser environment and Clerk is available
     if (typeof window !== "undefined") {
       try {

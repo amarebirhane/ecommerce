@@ -8,11 +8,13 @@ export const productApi = {
   },
 
   create: async (formData) => {
+    // Don't set Content-Type header - let browser set it with boundary for FormData
     const { data } = await axiosInstance.post("/admin/products", formData);
     return data;
   },
 
   update: async ({ id, formData }) => {
+    // Don't set Content-Type header - let browser set it with boundary for FormData
     const { data } = await axiosInstance.put(`/admin/products/${id}`, formData);
     return data;
   },
